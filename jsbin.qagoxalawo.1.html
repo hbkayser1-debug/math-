@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2026 by anonymous (http://jsbin.com/qagoxalawo/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>الموسوعة الأكاديمية الشاملة: المعادلات الكسرية - رياضيات 5 وحدات</title>
+    <style>
+        :root { --primary: #0f2c59; --secondary: #1b4965; --accent: #00d2fc; --bg: #f4f7f6; --text: #2b2b2b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); direction: rtl; line-height: 2.2; }
+        header { background-color: var(--primary); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.6rem; font-weight: bold; color: var(--accent); }
+        nav a { color: white; text-decoration: none; margin: 0 10px; font-weight: 600; cursor: pointer; font-size: 0.95rem; }
+        nav a:hover { color: var(--accent); }
+
+        .container { max-width: 1050px; margin: 40px auto; padding: 0 20px; }
+        
+        .welcome-hub { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .welcome-hub h1 { font-size: 2.6rem; color: var(--accent); margin-bottom: 15px; }
+        .welcome-hub p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 30px; color: #e2e8f0; }
+        
+        .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px; }
+        .hub-card { background: white; color: var(--text); padding: 25px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); text-align: right; border-top: 6px solid var(--accent); transition: 0.3s; }
+        .hub-card:hover { transform: translateY(-5px); }
+        .hub-card h3 { color: var(--primary); font-size: 1.25rem; margin-bottom: 10px; }
+        .hub-card p { color: #555; margin-bottom: 20px; line-height: 1.6; font-size: 0.9rem; }
+
+        .btn { background-color: var(--primary); color: white; padding: 12px 25px; border-radius: 8px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; display: inline-block; text-decoration: none; transition: 0.3s; }
+        .btn:hover { background-color: var(--secondary); color: var(--accent); }
+
+        .content-section { display: none; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .content-section.active { display: block; }
+        .content-section h2 { color: var(--primary); font-size: 2.2rem; margin-bottom: 25px; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
+        
+        .prose-text { font-size: 1.15rem; color: #334155; margin-bottom: 30px; text-align: justify; line-height: 2.2; }
+        .example-box { background-color: #f8fafc; border-right: 6px solid var(--accent); padding: 30px; border-radius: 10px; margin: 30px 0; font-size: 1.1rem; border: 1px solid #e2e8f0; }
+        .error-card { background-color: #fef2f2; border-right: 6px solid #ef4444; padding: 25px; border-radius: 10px; margin: 25px 0; font-size: 1.1rem; }
+
+        /* البطاقات التفاعلية القابلة للقلب (Flip Cards) */
+        .flashcards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 25px; }
+        .flip-card { background-color: transparent; width: 100%; height: 220px; perspective: 1000px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-radius: 12px; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .flip-card-front { background: #ffffff; border-top: 5px solid var(--primary); color: var(--primary); font-size: 1.2rem; font-weight: bold; }
+        .flip-card-back { background: var(--secondary); color: white; transform: rotateY(180deg); font-size: 1rem; line-height: 1.8; text-align: right; }
+
+        .fraction { display: inline-block; vertical-align: middle; text-align: center; margin: 0 4px; font-size: 1.2rem; font-weight: bold; }
+        .fraction > span { display: block; padding: 2px 6px; }
+        .numerator { border-bottom: 2.5px solid var(--primary); }
+        .denominator { padding-top: 2px; }
+
+        .question-card { background: #f8fafc; padding: 25px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #cbd5e1; }
+        .answer-input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1.1rem; margin-top: 10px; margin-bottom: 10px; }
+        
+        .btn-hint { background-color: #d97706; }
+        .btn-solution { background-color: #475569; }
+        .btn-new { background-color: #0d9488; font-size: 1.1rem; padding: 12px 30px; display: block; margin: 30px auto; }
+
+        .feedback, .hint-box, .solution-box { margin-top: 10px; padding: 15px; border-radius: 8px; display: none; font-size: 1rem; }
+        .feedback { font-weight: bold; }
+        .hint-box { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .solution-box { background-color: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; line-height: 1.9; }
+
+        footer { text-align: center; padding: 25px; background-color: var(--primary); color: white; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">مدرسة آفاق - الموسوعة الكسرية المتقدمة</div>
+        <nav>
+            <a href="javascript:void(0);" onclick="window.switchTab('hub')">الرئيسية</a>
+            <a href="javascript:void(0);" onclick="window.switchTab('theory')">الشرح المفصل والمطول</a>
+            <a href="javascript:void(0);" onclick="window.switchTab('interactive')">10 أمثلة تفاعلية</a>
+            <a href="javascript:void(0);" onclick="window.switchTab('cards')">20 بطاقة قابلة للقلب</a>
+            <a href="javascript:void(0);" onclick="window.switchTab('exams')">امتحانات تجريبية</a>
+            <a href="javascript:void(0);" onclick="window.switchTab('exercises')">بنك التمارين</a>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- واجهة الاختيار الرئيسية -->
+        <div id="hub-section" class="welcome-hub">
+            <h1>الكتاب الأكاديمي الشامل: المعادلات الكسرية</h1>
+            <p>مرجعك الأضخم لطلاب 5 وحدات. يتضمن شرحاً مطولاً ومفصلاً جداً، 10 أمثلة نموذجية مشروحة بعمق، 20 بطاقة تفاعلية تقلب عند النقر، امتحانات تجريبية، وبنك تمارين متجدد.</p>
+            
+            <div class="hub-grid">
+                <div class="hub-card">
+                    <h3>📚 الشرح المفصل والمطول</h3>
+                    <p>فلسفة المعادلات الكسرية، مجال التعريف، والدستور بشرح واسع ومريح للمبتدئين.</p>
+                    <button class="btn" onclick="window.switchTab('theory')">قراءة الشرح</button>
+                </div>
+                <div class="hub-card">
+                    <h3>💡 10 أمثلة تفاعلية</h3>
+                    <p>عشرة أمثلة كبرى مشروحة خطوة بخطوة لمحاكاة أوراق العمل المتقدمة.</p>
+                    <button class="btn" onclick="window.switchTab('interactive')">استعراض الأمثلة</button>
+                </div>
+                <div class="hub-card">
+                    <h3>🃏 20 بطاقة قابلة للقلب</h3>
+                    <p>بطاقات تفاعلية حقيقية انقر عليها لترى الشرح والقاعدة بالخلف.</p>
+                    <button class="btn" onclick="window.switchTab('cards')">فتح البطاقات</button>
+                </div>
+                <div class="hub-card">
+                    <h3>📝 امتحانات تجريبية</h3>
+                    <p>نماذج اختبارات حقيقية بمستوى البجروت للتدرب المستمر.</p>
+                    <button class="btn" onclick="window.switchTab('exams')">خوض الاختبار</button>
+                </div>
+                <div class="hub-card">
+                    <h3>⚡ بنك التمارين الحرة</h3>
+                    <p>10 مسألة للحل اليدوي مع تلميحات وحلول تفصيلية.</p>
+                    <button class="btn" onclick="window.switchTab('exercises')">بدء التمارين</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- القسم الأول: الشرح المفصل والمطول جداً -->
+        <div id="theory-section" class="content-section">
+            <h2>الشرح الموسع والأكاديمي الشامل للمعادلات الكسرية</h2>
+            
+            <p class="prose-text">
+                تعتبر المعادلات الكسرية التي تحتوي على مجهول في المقام من أهم الركائز الأساسية في منهج الرياضيات للمرحلة المتقدمة (5 وحدات). لكي نتمكن من استيعاب هذا الموضوع من الصفر وحتى الاحتراف، يجب أولاً أن نفهم البنية الجبرية لهذه المعادلات وما تختلف به عن المعادلات الخطية أو التربيعية العادية. عندما يظهر المتغير x في المقام، فإننا لا نتعامل فقط مع تعبير جبري تقليدي، بل نواجه "قيوداً منطقية صارمة" يفرضها النظام الرياضي على الأعداد.
+            </p>
+
+            <p class="prose-text">
+                الخطوة الأولى والأساسية التي تبدأ بها أي مسألة كسرية في الامتحانات هي تحديد ما يسمى بـ <strong>مجال التعريف (مجموعة الصلاحية)</strong>. في الرياضيات، تُعتبر عملية القسمة على العدد صفر "جريمة رياضية" تؤدي إلى انهيار النظام وكمية غير معرفة. بناءً على ذلك، وقبل إجراء أي عملية اختزال أو توحيد مقامات أو ضرب تبادلي، يجب علينا مراجعة كل مقام يحتوي على المجهول x، ومساواته بالصفر بشكل مستقل، واستخراج القيمة أو القيم التي تجعله صفراً، ومن ثم استثنائها تماماً عبر كتابة شرط صريح (مثلاً: x لا يساوي 3). هذه الورقة أو الملاحظة الجانبية التي تسجل فيها القيم الممنوعة ستكون هي بوابتك الأمنية في نهاية الحل لفحص النتائج.
+            </p>
+
+            <p class="prose-text">
+                بعد تأمين مجال التعريف، ننتقل إلى المعالجة الجبرية للمقامات عبر استراتيجيات التحليل المتقدمة. في كثير من الأحيان، تأتي المقامات بصيغ مركبة مثل فرق المربعين (مثل x² - 25)، أو كمربعات كاملة، أو تتطلب إخراج عامل مشترك أكبر لتسهيل الرؤية. إن هدفنا من هذا التحليل هو تفكيك المقامات وإيجاد "المقام المشترك الأكبر" الذي يُمكّننا من ضرب جميع حدود المعادلة دفعة واحدة والتخلص من الكسور نهائياً. بمجرد اختفاء الكسور، تتحول المعادلة الكسرية إلى معادلة تربيعية قياسية بالصورة (ax² + bx + c = 0). وإذا تعذر تحليلها بالطرق البسيطة، فإننا نلجأ فوراً إلى <strong>قانون الدستور العام (القانون العام للجذور)</strong> لحساب قيم x بدقة تامة.
+            </p>
+
+            <p class="prose-text">
+                المحطة الأخيرة والأهم في حل أي معادلة كسرية هي <strong>الفحص النهائي والتحقق</strong>. بعد أن تحصل على الحلول من معادلة الدستور، يجب عليك العودة فوراً إلى "مجال التعريف" الذي حددته في بداية الحل، ومقارنة كل حل نتج معك بقائمة الأرقام الممنوعة. فإذا كان أحد الجذور الناتجة يطابق قيمة ممنوعة، فإنه يُرفض قطعا وبلا تردد ويسمى "حلاً زائفا". وما يتبقى من حلول سليمة هو وحده الذي يُعتبر الحل النهائي المقبول للمعادلة.
+            </p>
+
+            <h3 style="color: var(--primary); margin-top: 40px; margin-bottom: 20px;">الأخطاء الشائعة المفصلة وكيفية تفاديها</h3>
+            
+            <div class="error-card">
+                <h4 style="color: #991b1b; margin-bottom: 10px;">الخطأ الشائع الأول: إغفال تحديد مجال التعريف في مستهل الحل</h4>
+                <p><strong>لماذا يحدث؟</strong> يستعجل الطالب في حل المعادلة بغية الوصول للناتج النهائي وينسى الشروط الأساسية.</p>
+                <p><strong>كيف نتفادى ذلك؟</strong> اجعل كتابة قيود المقام هي الخطوة المقدسة رقم صفر قبل كتابة أي إشارة يساوي في ورقة الامتحان.</p>
+            </div>
+
+            <div class="error-card">
+                <h4 style="color: #991b1b; margin-bottom: 10px;">الخطأ الشائع الثاني: قبول جميع جذور الدستور دون فحصها</h4>
+                <p><strong>لماذا يحدث؟</strong> الاعتقاد الخاطئ بأن الأرقام الناتجة عن الصيغة التربيعية صالحة دائماً.</p>
+                <p><strong>كيف نتفادى ذلك؟</strong> اربط دائماً بين ناتج الدستور ومجموعة الصلاحية عبر مطابقة صارمة تضمن عدم وقوع الكارثة (القسمة على صفر).</p>
+            </div>
+
+            <div class="error-card">
+                <h4 style="color: #991b1b; margin-bottom: 10px;">الخطأ الشائع الثالث: الشطب العشوائي غير المبرر بين البسط والمقام</h4>
+                <p><strong>لماذا يحدث؟</strong> قيام الطالب بشطب الحروف والأرقام بين البسط والمقام وجود عمليات جمع أو طرح تفصل بينها.</p>
+                <p><strong>كيف نتفادى ذلك؟</strong> تذكر جيداً: الشطب مسموح حصرياً بين "العوامل المضروبة" بعد تحليل التعبيرات إلى أقواس كاملة.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn" onclick="window.switchTab('interactive')">الانتقال إلى 10 أمثلة تفاعلية كبرى</button>
+            </div>
+        </div>
+
+        <!-- القسم الثاني: 10 أمثلة تفاعلية كبرى ومفصلة -->
+        <div id="interactive-section" class="content-section">
+            <h2>10 أمثلة نموذجية مشروحة بعمق (محاكاة لتمارين أوراق العمل)</h2>
+            <p class="prose-text">تضم هذه القائمة عشرة أمثلة متكاملة تغطي مختلف أفكار تحليل المقامات، فرق المربعين، تو<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"480c9d8468c44ad3bed3c74fbcc6d6f3","r":1,"spa":2}' crossorigin="anonymous"></script>
